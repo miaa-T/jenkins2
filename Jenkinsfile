@@ -90,7 +90,20 @@ pipeline {
 
     post {
         always {
-            cleanWs()
+            node {
+                echo 'Cleaning up workspace...'
+                cleanWs()
+                echo 'Workspace cleaned up.'
+            }
+        }
+        success {
+            echo 'Pipeline succeeded.'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+        unstable {
+            echo 'Pipeline is unstable.'
         }
     }
 }
