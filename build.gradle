@@ -76,7 +76,7 @@ dependencies {
 // Simple Slack notification task
 task slackNotification {
     doLast {
-        def webhook = "https://hooks.slack.com/services/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"
+        def webhook = "${env.SLACK_WEBHOOK_URL}"
         def message = """{"text": "Build completed for ${project.name} - Version ${project.version}"}"""
 
         def post = new URL(webhook).openConnection()

@@ -66,15 +66,19 @@ stage("Quality Gate") {
                 }
             }
         }
-        stage("Slack Notification") {
+          stage('Notify Slack') {
                     steps {
-                        script {
-
-                                bat './gradlew slackNotification'
-
+                        slackSend (
+                            color: '#36a64f', // Green color for success
+                            message: "Build completed for ${env.JOB_NAME} - Version ${env.CHANGE_NUMBER}",
+                            webhook: "${env.SLACK_WEBHOOK_URL}"
+                        )
+                    }
+                    post {
+                        always {
+                            echo 'Slack notification sent'
                         }
                     }
                 }
-    }
 
 }
