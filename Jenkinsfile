@@ -6,21 +6,25 @@ pipeline {
            }
    environment {
           deployStatus = ''
+           MAVEN_REPO_USERNAME = credentials('f57065b6-df32-4c92-a41d-8423325acaac')
+                  MAVEN_REPO_PASSWORD = credentials('f57065b6-df32-4c92-a41d-8423325acaac')
+
+
       }
 
 
-    stages {
-       stage("test") {
-                          steps {
-                              script {
-
-                                      bat './gradlew test'
-                                      junit 'build/test-results/test/*.xml'
-                                      cucumber '**/reports/*.json'
-
-                              }
-                          }
-                      }
+    stage('Publish') {
+                steps {
+                    withGradle {
+                        script {
+                            withEnv(["MAVEN_REPO_USERNAME=${env.MAVEN_REPO_USERNAME}", "MAVEN_REPO_PASSWORD=${env.MAVEN_REPO_PASSWORD}"]) {
+                                bat 'gradlew publish'
+                            }
+                        }
+                    }
+                }
+            }
+        }
 stage("Code Analysis") {
     steps {
         script {
