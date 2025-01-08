@@ -5,20 +5,17 @@ pipeline {
           deployStatus = ''
       }
     stages {
-        stage("test") {
-            steps {
-                script {
+       stage("test") {
+                          steps {
+                              script {
 
-                        bat './gradlew test'
-                        junit 'build/test-results/test/*.xml'
-                        cucumber buildStatus: 'UNSTABLE',
-                                 reportTitle: 'My report',
-                                 fileIncludePattern: 'target/report.json',
-                                 trendsLimit: 10
+                                      bat './gradlew test'
+                                      junit 'build/test-results/test/*.xml'
+                                      cucumber '**/reports/*.json'
 
-                }
-            }
-        }
+                              }
+                          }
+                      }
 stage("Code Analysis") {
     steps {
         script {
