@@ -57,15 +57,22 @@ stage("Quality Gate") {
                 }
             }
         }
-        stage("Mail Notification") {
-            steps {
-                script {
-
-                        bat './gradlew sendMail'
-
-                }
-            }
-        }
+        stage('Send Email') {
+                   steps {
+                       script {
+                           emailext (
+                               subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
+                               body: """
+                                   Build Status: ${currentBuild.currentResult}
+                                   Build Number: ${env.BUILD_NUMBER}
+                                   Build URL: ${env.BUILD_URL}
+                                   """,
+                               to: 'mahdia.toubal@gmail.com',
+                               from: 'mahdia.b964@gmail.com',
+                           )
+                       }
+                   }
+               }
           stage('Notify Slack') {
                     steps {
                         slackSend (
