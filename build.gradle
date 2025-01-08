@@ -27,25 +27,22 @@ repositories {
     mavenCentral()
 }
 
-publishing {
+publish {
     repositories {
         maven {
             url 'https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
             credentials {
-
                 username = project.findProperty('mavenRepoUsername') ?: ''
                 password = project.findProperty('mavenRepoPassword') ?: ''
             }
         }
     }
-
     publications {
         mavenJava(MavenPublication) {
             from components.java
-
         }
     }
-
+}
 
 
 // Add Slack notification configuration
