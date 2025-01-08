@@ -63,10 +63,8 @@ stage("Quality Gate") {
                            {
                            bat 'mvn deploy:deploy-file ' +
                                '-DgroupId=com.example ' +
-                               '-DartifactId=your-artifact ' +
                                '-Dversion=1.0-SNAPSHOT ' +
                                '-Dpackaging=jar ' +
-                               '-Dfile=build/libs/your-artifact-1.0-SNAPSHOT.jar ' +
                                '-DrepositoryId=maven-repo ' +
                                '-Durl=https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
                        }
