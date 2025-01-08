@@ -1,6 +1,9 @@
 pipeline {
 
   agent any
+  tools {
+               maven 'Maven 3.8.5'  // Must match the name exactly as configured
+           }
    environment {
           deployStatus = ''
       }
@@ -49,13 +52,27 @@ stage("Quality Gate") {
                 }
             }
         }
-     stage('Publish') {
-                steps {
-                    withMaven(globalMavenSettingsConfig: 'maven-global-settings') {  // Use the ID you set
-                        bat 'mvn deploy'
-                    }
-                }
-            }
+        stage('Publish') {
+               steps {
+                   script {
+
+                        withMaven(
+                                              maven: 'Maven',
+                                               globalMavenSettingsConfig: 'MyGlobalSettings'
+                                           ))
+                           {
+                           bat 'mvn deploy:deploy-file ' +
+                               '-DgroupId=com.example ' +
+                               '-DartifactId=your-artifact ' +
+                               '-Dversion=1.0-SNAPSHOT ' +
+                               '-Dpackaging=jar ' +
+                               '-Dfile=build/libs/your-artifact-1.0-SNAPSHOT.jar ' +
+                               '-DrepositoryId=maven-repo ' +
+                               '-Durl=https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
+                       }
+                   }
+               }
+           }
         stage('Send Email') {
                    steps {
                        script {
