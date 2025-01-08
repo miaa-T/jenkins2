@@ -4,10 +4,8 @@ pipeline {
    environment {
           deployStatus = ''
       }
-        tools {
-              maven 'Maven'
-          }
-          
+      
+
     stages {
        stage("test") {
                           steps {
