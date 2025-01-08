@@ -62,4 +62,17 @@ test {
     testLogging {
         events "passed", "skipped", "failed"
     }
+    task slackNotification {
+        doLast {
+            def webhook = "${env.SLACK_WEBHOOK_URL}"
+            def message = """{"text": "Build completed for ${project.name} - Version ${project.version}"}"""
+
+            def post = new URL(webhook).openConnection()
+            post.setRequestMethod("POST")
+            post.setDoOutput(true)
+            post.setRequestProperty("Content-Type", "application/json")
+
+            post.getOutputStream().write(message.getBytes("UTF-8"))
+            println "Slack notification sent with response: ${post.getResponseCode()}"
+        }}
 }
