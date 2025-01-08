@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     withEnv(["MAVEN_REPO_USERNAME=${env.MAVEN_REPO_USERNAME}", "MAVEN_REPO_PASSWORD=${env.MAVEN_REPO_PASSWORD}"]) {
-                        bat 'gradlew publish'
+                        bat './gradlew publish'
                     }
                 }
             }
@@ -88,22 +88,5 @@ pipeline {
         } */
     }
 
-    post {
-        always {
-            node {
-                echo 'Cleaning up workspace...'
-                cleanWs()
-                echo 'Workspace cleaned up.'
-            }
-        }
-        success {
-            echo 'Pipeline succeeded.'
-        }
-        failure {
-            echo 'Pipeline failed.'
-        }
-        unstable {
-            echo 'Pipeline is unstable.'
-        }
-    }
+
 }

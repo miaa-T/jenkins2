@@ -26,7 +26,7 @@ sonarqube {    // Changed from 'sonar' to 'sonarqube'
 repositories {
     mavenCentral()
 }
-publishing {
+publish {
     repositories {
         maven {
             url 'https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
