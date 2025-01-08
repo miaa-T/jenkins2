@@ -84,7 +84,7 @@ pipeline {
         }
 
 
-          /*stage('Slack Notification') {
+          stage('Slack Notification') {
                     steps {
                         slackSend (
                             color: '#36a64f', // Green color for success
@@ -97,6 +97,6 @@ pipeline {
                             echo 'Slack notification sent'
                         }
                     }
-                }*/
+                }
 
 }}
