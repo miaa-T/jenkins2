@@ -4,6 +4,10 @@ pipeline {
    environment {
           deployStatus = ''
       }
+        tools {
+              maven 'Maven'
+          }
+          
     stages {
        stage("test") {
                           steps {
@@ -47,13 +51,13 @@ stage("Quality Gate") {
                 }
             }
         }
-        stage('Publish') {
-                    steps {
-                         withMaven(globalMavenSettingsConfig: 'your-maven-settings-id') {
-                                            bat 'mvn deploy'
-                                        }
+     stage('Publish') {
+                steps {
+                    withMaven(globalMavenSettingsConfig: 'maven-global-settings') {  // Use the ID you set
+                        bat 'mvn deploy'
                     }
                 }
+            }
         stage('Send Email') {
                    steps {
                        script {
