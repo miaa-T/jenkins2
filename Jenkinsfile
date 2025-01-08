@@ -13,18 +13,7 @@ pipeline {
       }
 
 
-    stage('Publish') {
-                steps {
-                    withGradle {
-                        script {
-                            withEnv(["MAVEN_REPO_USERNAME=${env.MAVEN_REPO_USERNAME}", "MAVEN_REPO_PASSWORD=${env.MAVEN_REPO_PASSWORD}"]) {
-                                bat 'gradlew publish'
-                            }
-                        }
-                    }
-                }
-            }
-        
+
 stage("Code Analysis") {
     steps {
         script {
@@ -56,25 +45,18 @@ stage("Quality Gate") {
                 }
             }
         }
-        stage('Publish') {
-               steps {
-                   script {
 
-                        withMaven(
-                                              maven: 'Maven',
-                                               globalMavenSettingsConfig: 'MyGlobalSettings'
-                                           )
-                           {
-                           bat 'mvn deploy:deploy-file ' +
-                               '-DgroupId=com.example ' +
-                               '-Dversion=1.0-SNAPSHOT ' +
-                               '-Dpackaging=jar ' +
-                               '-DrepositoryId=maven-repo ' +
-                               '-Durl=https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
-                       }
-                   }
-               }
-           }
+    stage('Publish') {
+                steps {
+                    withGradle {
+                        script {
+                            withEnv(["MAVEN_REPO_USERNAME=${env.MAVEN_REPO_USERNAME}", "MAVEN_REPO_PASSWORD=${env.MAVEN_REPO_PASSWORD}"]) {
+                                bat 'gradlew publish'
+                            }
+                        }
+                    }
+                }
+            }
         stage('Send Email') {
                    steps {
                        script {
