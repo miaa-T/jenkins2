@@ -73,7 +73,7 @@ stage("Quality Gate") {
                        }
                    }
                }
-          stage('Notify Slack') {
+         /* stage('Notify Slack') {
                     steps {
                         slackSend (
                             color: '#36a64f', // Green color for success
@@ -86,6 +86,6 @@ stage("Quality Gate") {
                             echo 'Slack notification sent'
                         }
                     }
-                }
+                }*/
 
 }}
