@@ -1,0 +1,90 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id "org.sonarqube" version "4.4.1.3373"
+    id 'maven-publish'
+    id "de.zebrajaeger.sendMail" version "0.2.2"
+}
+
+group = 'com.example'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+sonarqube {    // Changed from 'sonar' to 'sonarqube'
+    properties {
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.login", "squ_b85b5bcb6f0975bfa911d93199df4bc7d05f3f6c"
+        property "sonar.projectKey", "tp-jenkins"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.gradle.skipCompile", "true"
+        property "sonar.java.binaries", "${buildDir}/classes/java/main"
+        property "sonar.java.test.binaries", "${buildDir}/classes/java/test"
+        property "sonar.qualitygate.wait", "true"        // Add this
+        property "sonar.qualitygate.timeout", "300"      // Add this
+    }
+}
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    repositories {
+        maven {
+            url 'https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
+            credentials {
+                username 'myMavenRepo'
+                password '0123456789'
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+sendMail {
+    smtpServer {
+        host "smtp.gmail.com"
+        port 587
+        user "mahdia.b964@gmail.com"
+        password "jvay xssv rdoy yzlh"
+    }
+    mail {
+        from "mahdia.b964@gmail.com"
+        to "mahdia.toubal@gmail.com"
+        body "Hello!!"
+    }
+}
+
+// Add Slack notification configuration
+configurations {
+    slack
+}
+
+dependencies {
+    testImplementation 'io.cucumber:cucumber-java:6.0.0'
+    testImplementation 'io.cucumber:cucumber-junit:6.0.0'
+    testImplementation 'junit:junit:4.12'
+
+    // Add HTTP client for Slack notifications
+    slack 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
+}
+
+
+// Simple Slack notification task
+task slackNotification {
+    doLast {
+        def webhook = "https://hooks.slack.com/services/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"
+        def message = """{"text": "Build completed for ${project.name} - Version ${project.version}"}"""
+
+        def post = new URL(webhook).openConnection()
+        post.setRequestMethod("POST")
+        post.setDoOutput(true)
+        post.setRequestProperty("Content-Type", "application/json")
+
+        post.getOutputStream().write(message.getBytes("UTF-8"))
+        println "Slack notification sent with response: ${post.getResponseCode()}"
+    }
+}
