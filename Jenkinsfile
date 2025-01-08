@@ -4,7 +4,7 @@ pipeline {
    environment {
           deployStatus = ''
       }
-      
+
 
     stages {
        stage("test") {
