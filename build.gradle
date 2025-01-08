@@ -8,26 +8,27 @@ plugins {
 
 group = 'com.example'
 version = '1.0-SNAPSHOT'
-sourceCompatibility = 1.8
+sourceCompatibility = '1.8'
 
-sonarqube {    // Changed from 'sonar' to 'sonarqube'
+sonarqube {
     properties {
         property "sonar.host.url", "http://localhost:9000"
         property "sonar.login", "squ_b85b5bcb6f0975bfa911d93199df4bc7d05f3f6c"
         property "sonar.projectKey", "tp-jenkins"
         property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.gradle.skipCompile", "true"
+        property "sonar.gradle.skipCompile", true
         property "sonar.java.binaries", "${buildDir}/classes/java/main"
         property "sonar.java.test.binaries", "${buildDir}/classes/java/test"
-        property "sonar.qualitygate.wait", "true"        // Add this
-        property "sonar.qualitygate.timeout", "300"      // Add this
+        property "sonar.qualitygate.wait", true
+        property "sonar.qualitygate.timeout", "300"
     }
 }
+
 repositories {
     mavenCentral()
 }
 
-publish {
+publishing {
     repositories {
         maven {
             url 'https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
@@ -44,8 +45,6 @@ publish {
     }
 }
 
-
-// Add Slack notification configuration
 configurations {
     slack
 }
@@ -54,9 +53,13 @@ dependencies {
     testImplementation 'io.cucumber:cucumber-java:6.0.0'
     testImplementation 'io.cucumber:cucumber-junit:6.0.0'
     testImplementation 'junit:junit:4.12'
-
-    // Add HTTP client for Slack notifications
     slack 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 }
 
-
+test {
+    useJUnit()
+    maxHeapSize = '1G'
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
