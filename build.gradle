@@ -26,13 +26,14 @@ sonarqube {    // Changed from 'sonar' to 'sonarqube'
 repositories {
     mavenCentral()
 }
-publish {
+
+publishing {
     repositories {
         maven {
             url 'https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
             credentials {
-                username = System.getenv('MAVEN_REPO_USERNAME')
-                password = System.getenv('MAVEN_REPO_PASSWORD')
+                username 'myMavenRepo'
+                password '0123456789'
             }
         }
     }
@@ -42,6 +43,7 @@ publish {
         }
     }
 }
+
 
 
 // Add Slack notification configuration
