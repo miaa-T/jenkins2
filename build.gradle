@@ -44,19 +44,7 @@ publishing {
     }
 }
 
-sendMail {
-    smtpServer {
-        host "smtp.gmail.com"
-        port 587
-        user "mahdia.b964@gmail.com"
-        password "jvay xssv rdoy yzlh"
-    }
-    mail {
-        from "mahdia.b964@gmail.com"
-        to "mahdia.toubal@gmail.com"
-        body "Hello!!"
-    }
-}
+
 
 // Add Slack notification configuration
 configurations {
@@ -73,18 +61,3 @@ dependencies {
 }
 
 
-// Simple Slack notification task
-task slackNotification {
-    doLast {
-        def webhook = "${env.SLACK_WEBHOOK_URL}"
-        def message = """{"text": "Build completed for ${project.name} - Version ${project.version}"}"""
-
-        def post = new URL(webhook).openConnection()
-        post.setRequestMethod("POST")
-        post.setDoOutput(true)
-        post.setRequestProperty("Content-Type", "application/json")
-
-        post.getOutputStream().write(message.getBytes("UTF-8"))
-        println "Slack notification sent with response: ${post.getResponseCode()}"
-    }
-}

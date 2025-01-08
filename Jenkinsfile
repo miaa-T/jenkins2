@@ -47,16 +47,13 @@ stage("Quality Gate") {
                 }
             }
         }
-        stage("Deploy") {
-            steps {
-                script {
-
-                        bat './gradlew publish'
-
-
+        stage('Publish') {
+                    steps {
+                         withMaven(globalMavenSettingsConfig: 'your-maven-settings-id') {
+                                            bat 'mvn deploy'
+                                        }
+                    }
                 }
-            }
-        }
         stage('Send Email') {
                    steps {
                        script {
@@ -73,7 +70,7 @@ stage("Quality Gate") {
                        }
                    }
                }
-         /* stage('Notify Slack') {
+          /*stage('Slack Notification') {
                     steps {
                         slackSend (
                             color: '#36a64f', // Green color for success
