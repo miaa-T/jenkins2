@@ -32,17 +32,19 @@ publishing {
         maven {
             url 'https://mymavenrepo.com/repo/rJIKOUgtFy4prBAMsqKs'
             credentials {
-                username 'myMavenRepo'
-                password '0123456789'
+
+                username = project.findProperty('mavenRepoUsername') ?: ''
+                password = project.findProperty('mavenRepoPassword') ?: ''
             }
         }
     }
+
     publications {
-        maven(MavenPublication) {
+        mavenJava(MavenPublication) {
             from components.java
+
         }
     }
-}
 
 
 

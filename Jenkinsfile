@@ -3,7 +3,12 @@ pipeline {
   agent any
    environment {
           deployStatus = ''
-      }
+                  MAVEN_REPO_CREDS = credentials('maven-repo-credentials')
+                        // Define paths - adjust these based on your Jenkins configuration
+                        MAVEN_HOME = tool 'MAVEN_HOME'
+                        JAVA_HOME = tool 'JDK21'  // Adjust version as needed
+                        PATH = "${MAVEN_HOME}\\bin;${JAVA_HOME}\\bin;${env.PATH}"
+                    }
         tools {
               maven 'Maven 3.8.5'
           }
@@ -51,13 +56,21 @@ stage("Quality Gate") {
                 }
             }
         }
-     stage('Publish') {
-                steps {
-                    withMaven(globalMavenSettingsConfig:  'MyGlobalSettings') {
-                        bat 'mvn deploy'
-                    }
-                }
-            }
+             stage('publish') {
+                 steps {
+                     script {
+                         // Create gradle.properties with repository credentials
+                         writeFile file: 'gradle.properties', text: """
+                             mavenRepoUsername=${MAVEN_REPO_CREDS_USR}
+                             mavenRepoPassword=${MAVEN_REPO_CREDS_PSW}
+                         """
+
+                         bat "./gradlew publish"
+                     }
+                 }
+             }
+
+
         stage('Send Email') {
                    steps {
                        script {
