@@ -59,7 +59,7 @@ stage("Quality Gate") {
                         withMaven(
                                               maven: 'Maven',
                                                globalMavenSettingsConfig: 'MyGlobalSettings'
-                                           ))
+                                           )
                            {
                            bat 'mvn deploy:deploy-file ' +
                                '-DgroupId=com.example ' +
